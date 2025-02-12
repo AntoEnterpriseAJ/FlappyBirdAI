@@ -1,37 +1,49 @@
+import collections
+
 import pygame
+import config
+import pipe
+from src.ground import Ground
 
 pygame.init()
-screen = pygame.display.set_mode((1280, 720))
+window = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
 clock = pygame.time.Clock()
-running = True
-dt = 0
 
-PLAYER_SPEED = 300.0
-player_pos = pygame.Vector2(screen.get_width() / 2.0, screen.get_height() / 2.0)
-
-while running:
+def poll_events():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
+            pygame.quit()
+            exit()
 
-    screen.fill("purple")
+def spawn_pipe(pipes):
+    pipes.appendleft(pipe.Pipe())
 
-    pygame.draw.circle(screen, "red", player_pos, 40.0)
+def main():
+    pipe_spawn_time = 0
+    ground = Ground()
+    pipes = collections.deque()
 
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_ESCAPE]:
-        running = False
-    if keys[pygame.K_w]:
-        player_pos.y -= PLAYER_SPEED * dt
-    if keys[pygame.K_s]:
-        player_pos.y += PLAYER_SPEED * dt
-    if keys[pygame.K_a]:
-        player_pos.x -= PLAYER_SPEED * dt
-    if keys[pygame.K_d]:
-        player_pos.x += PLAYER_SPEED * dt
+    while True:
+        poll_events()
 
-    pygame.display.flip()
+        window.fill("purple")
 
-    dt = clock.tick(60) / 1000
+        ground.draw(window)
 
-pygame.quit()
+        if pipe_spawn_time <= 0:
+            spawn_pipe(pipes)
+            pipe_spawn_time = config.PIPE_SPAWN_TIME
+
+        for pipe in list(pipes):
+            pipe.draw(window)
+            pipe.update()
+
+            if not pipe.is_active():
+                pipes.pop()
+
+        pygame.display.flip()
+        pipe_spawn_time -= 1
+        clock.tick(60)
+
+if __name__ == '__main__':
+    main()
