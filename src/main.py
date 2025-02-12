@@ -1,9 +1,9 @@
 import collections
-
 import pygame
 import config
 import pipe
 from src.ground import Ground
+from src.player import Player
 
 pygame.init()
 window = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
@@ -22,6 +22,7 @@ def main():
     pipe_spawn_time = 0
     ground = Ground()
     pipes = collections.deque()
+    player = Player()
 
     while True:
         poll_events()
@@ -40,6 +41,9 @@ def main():
 
             if not pipe.is_active():
                 pipes.pop()
+
+        player.update(pipes, ground)
+        player.draw(window)
 
         pygame.display.flip()
         pipe_spawn_time -= 1
