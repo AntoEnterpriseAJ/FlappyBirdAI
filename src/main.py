@@ -5,10 +5,6 @@ import pipe
 from src.ground import Ground
 from src.population import Population
 
-pygame.init()
-window = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
-clock = pygame.time.Clock()
-
 def poll_events():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -25,6 +21,10 @@ def main():
     ground = Ground()
     pipes = collections.deque()
     population = Population(population_size)
+
+    pygame.init()
+    window = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
+    clock = pygame.time.Clock()
 
     while True:
         poll_events()
@@ -45,6 +45,17 @@ def main():
 
         population.update_players(pipes, ground)
         population.draw(window, pipes)
+
+        pressed = pygame.key.get_pressed()
+        if pressed[pygame.K_k]:
+            for p in population.players:
+                p.alive = False
+                pygame.time.delay(20)
+
+        if population.is_extinct():
+            population.next_gen()
+            pipes.clear()
+            pipe_spawn_time = 0
 
         pygame.display.flip()
         pipe_spawn_time -= 1
