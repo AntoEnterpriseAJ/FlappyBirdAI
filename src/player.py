@@ -8,8 +8,9 @@ import brain
 
 class Player:
     def __init__(self):
-        self.active = True
+        self.alive = True
         self.flapping = False
+        self.alive_time = 0
         self.velocity = 1.0
         self.color = random.uniform(0, 255), random.uniform(0, 255), random.uniform(0, 255)
         self.rectangle = pygame.rect.Rect(
@@ -20,10 +21,14 @@ class Player:
             )
 
         self.brain = brain.Brain()
-        self.vision = np.array([0.5, 1.0, 0.5])
+        self.vision = np.array([1.0, 0.5, 1.0, 0.5])
+
+    def get_fitness(self):
+        return self.alive_time
+
 
     def draw(self, window, pipes):
-        if self.active:
+        if self.alive:
             pygame.draw.rect(window, self.color, self.rectangle)
 
             closest = pipes[0]
@@ -40,9 +45,10 @@ class Player:
 
     def update(self, pipes, ground):
         if self.pipe_collision(pipes) or self.bounds_collision(ground):
-            self.active = False
+            self.alive = False
 
-        if self.active:
+        if self.alive:
+            self.alive_time += 1
             self.rectangle.y += self.velocity
             self.velocity = min(self.velocity + config.VELOCITY_RATE, config.MAX_VELOCITY)
             self.update_vision(pipes)
@@ -55,9 +61,9 @@ class Player:
             if not p.passed:
                 closest = p
 
-        self.vision[0] = max(0, self.rectangle.center[1] - closest.top_pipe.bottom) / 50
-        self.vision[1] = max(0, self.rectangle.center[0] - closest.top_pipe.x) / 50
-        self.vision[2] = max(0, self.rectangle.center[1] - closest.bottom_pipe.y) / 50
+        self.vision[1] = max(0, self.rectangle.center[1] - closest.top_pipe.bottom) / 50
+        self.vision[2] = max(0, self.rectangle.center[0] - closest.top_pipe.x) / 50
+        self.vision[3] = max(0, self.rectangle.center[1] - closest.bottom_pipe.y) / 50
 
     def think(self):
         flap_chance = self.brain.make_prediction(self.vision)
