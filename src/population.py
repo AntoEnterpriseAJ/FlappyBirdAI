@@ -1,11 +1,15 @@
 import random
 import numpy as np
 import player
+import config
 
 class Population:
     def __init__(self, size):
         self.size = size
-        self.current_gen = 0
+
+        self.current_gen = 1
+        self.current_log_time = config.LOG_TIME
+
         self.players = []
         for i in range(size):
             self.players.append(player.Player())
@@ -28,8 +32,23 @@ class Population:
 
         return extinct
 
+    def log(self):
+        self.current_log_time += 1
+        if self.current_log_time >= config.LOG_TIME:
+            self.current_log_time = 0
+
+            current_players = 0
+            for p in self.players:
+                if p.alive:
+                    current_players += 1
+
+            print(f"alive players: {current_players}")
+
+    def calc_fitness(self):
+        return sum(p.get_fitness() for p in self.players)
+
     def next_gen(self):
-        print(f'generation: {self.current_gen}')
+        print(f'previous fitness: {self.calc_fitness()}, current generation: {self.current_gen}')
         new_players = self.selection()
         self.crossover(new_players)
         self.current_gen += 1
@@ -47,7 +66,6 @@ class Population:
 
         return new_players
 
-    # TODO: what if the size is not even
     def crossover(self, new_players):
         offspring = [None] * self.size
 
@@ -65,7 +83,7 @@ class Population:
         self.players = offspring
 
     @staticmethod
-    def mutate(player, mutation_rate = 0.1, mutation_change = 0.2):
+    def mutate(player, mutation_rate = 0.05, mutation_change = 0.2):
         weights = player.brain.weights
         for i in range(len(weights)):
             if random.random() < mutation_rate:
@@ -92,7 +110,6 @@ class Population:
 
         return first_offspring, second_offspring
 
-    # TODO: handle 0 fitness case
     def cumulative_probabilities(self):
         total_fitness = sum(p.get_fitness() for p in self.players)
         selection_probabilities = [p.get_fitness() / total_fitness for p in self.players]
