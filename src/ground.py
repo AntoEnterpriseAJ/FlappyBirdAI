@@ -10,6 +10,17 @@ class Ground:
             config.SCREEN_WIDTH,
             config.GROUND_HEIGHT
         )
+        self.texture = pygame.image.load('img/ground.png')
+        self.texture = pygame.transform.scale(
+            self.texture, (config.SCREEN_WIDTH, config.GROUND_HEIGHT)
+        )
+
+        self.ground_scroll = 0
 
     def draw(self, window):
-        pygame.draw.rect(window, "red", self.rectangle)
+        window.blit(self.texture, (self.ground_scroll, config.GROUND_Y))
+        window.blit(self.texture, (self.ground_scroll + config.SCREEN_WIDTH, config.GROUND_Y))
+
+        self.ground_scroll -= config.GROUND_SPEED
+        if abs(self.ground_scroll) > config.SCREEN_WIDTH:
+            self.ground_scroll = 0
