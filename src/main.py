@@ -23,6 +23,9 @@ def main():
     population = Population(population_size)
 
     pygame.init()
+    pygame.display.set_caption("Flappy Bird AI")
+    pygame.display.set_icon(pygame.image.load("img/bird.png"))
+
     window = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
     clock = pygame.time.Clock()
 
