@@ -1,7 +1,5 @@
 import numpy as np
 import pygame
-from pygame.display import update
-
 import config
 import random
 import brain
@@ -12,13 +10,22 @@ class Player:
         self.flapping = False
         self.alive_time = 0
         self.velocity = 1.0
-        self.color = random.uniform(0, 255), random.uniform(0, 255), random.uniform(0, 255)
+        self.color = random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
         self.rectangle = pygame.rect.Rect(
             config.SCREEN_WIDTH * 0.1,
             (config.SCREEN_HEIGHT - config.GROUND_HEIGHT - config.PLAYER_SIZE) / 2.0 ,
             config.PLAYER_SIZE,
             config.PLAYER_SIZE
             )
+
+        self.texture = pygame.image.load('img/bird.png')
+        self.texture = pygame.transform.scale(
+            self.texture, (self.rectangle.width, self.rectangle.height)
+        )
+
+        tint_surface = pygame.Surface(self.texture.get_size(), pygame.SRCALPHA)
+        tint_surface.fill(self.color)
+        self.texture.blit(tint_surface, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
 
         self.brain = brain.Brain()
         self.vision = np.array([1.0, 0.5, 1.0, 0.5])
@@ -29,7 +36,8 @@ class Player:
 
     def draw(self, window, pipes):
         if self.alive:
-            pygame.draw.rect(window, self.color, self.rectangle)
+            window.blit(self.texture, (self.rectangle.x, self.rectangle.y),
+                        (0, 0, self.rectangle.width, self.rectangle.height))
 
             closest = pipes[0]
             for p in pipes:
