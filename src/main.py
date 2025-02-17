@@ -26,10 +26,12 @@ def main():
     window = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
     clock = pygame.time.Clock()
 
+    bg_tex = pygame.image.load('img/bg.png')
+    bg_tex = pygame.transform.scale(bg_tex, (config.SCREEN_WIDTH, config.GROUND_Y))
+
     while True:
         poll_events()
-        window.fill("purple")
-
+        window.blit(bg_tex, (0,0))
         ground.draw(window)
 
         if pipe_spawn_time <= 0:
@@ -45,6 +47,7 @@ def main():
 
         population.update_players(pipes, ground)
         population.draw(window, pipes)
+        population.log()
 
         pressed = pygame.key.get_pressed()
         if pressed[pygame.K_k]:
