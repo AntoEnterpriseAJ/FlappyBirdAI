@@ -1,3 +1,4 @@
+import copy
 import random
 import numpy as np
 import player
@@ -61,7 +62,7 @@ class Population:
             choice = 1 - random.random()
             for j in range(len(cumulative)):
                 if choice <= cumulative[j]:
-                    new_players[i] = self.players[j]
+                    new_players[i] = copy.copy(self.players[j])
                     break
 
         return new_players
