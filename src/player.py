@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 import numpy as np
 import pygame
 import config
@@ -33,6 +35,19 @@ class Player:
     def get_fitness(self):
         return self.alive_time
 
+    def __deepcopy__(self, memodict={}):
+        if id(self) in memodict:
+            return memodict[id(self)]
+
+        player = Player()
+        memodict[id(self)] = player
+
+        player.color = self.color
+        player.rectangle = deepcopy(self.rectangle, memodict)
+        player.brain = deepcopy(self.brain, memodict)
+        player.vision = deepcopy(self.vision, memodict)
+
+        return player
 
     def draw(self, window, pipes):
         if self.alive:
