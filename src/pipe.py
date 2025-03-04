@@ -8,8 +8,8 @@ class Pipe:
         self.active = True
         self.passed = False
         self.x = config.SCREEN_WIDTH
-        self.texture_top = pygame.image.load('img/pipe.png')
-        self.texture_bottom = pygame.image.load('img/pipe.png')
+        self.texture_top = pygame.image.load(config.BASE_PATH/'img/pipe.png')
+        self.texture_bottom = pygame.image.load(config.BASE_PATH/'img/pipe.png')
 
         gap_y = random.uniform(config.PIPE_GAP_SIZE, config.GROUND_Y - config.PIPE_GAP_SIZE * 2)
 

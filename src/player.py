@@ -18,7 +18,7 @@ class Player:
             config.PLAYER_SIZE
             )
 
-        self.texture = pygame.image.load('img/bird.png')
+        self.texture = pygame.image.load(config.BASE_PATH/'img/bird.png')
         self.texture = pygame.transform.scale(
             self.texture, (self.rectangle.width, self.rectangle.height)
         )

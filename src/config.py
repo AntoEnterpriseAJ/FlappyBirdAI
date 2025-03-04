@@ -1,3 +1,7 @@
+from pathlib import Path
+
+BASE_PATH = Path(__file__).parent.parent
+
 SCREEN_WIDTH = 550
 SCREEN_HEIGHT = 720
 

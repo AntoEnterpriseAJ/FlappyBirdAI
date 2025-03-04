@@ -10,7 +10,7 @@ class Ground:
             config.SCREEN_WIDTH,
             config.GROUND_HEIGHT
         )
-        self.texture = pygame.image.load('img/ground.png')
+        self.texture = pygame.image.load(config.BASE_PATH/'img/ground.png')
         self.texture = pygame.transform.scale(
             self.texture, (config.SCREEN_WIDTH, config.GROUND_HEIGHT)
         )
