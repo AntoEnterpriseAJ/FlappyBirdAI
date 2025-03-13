@@ -10,6 +10,9 @@ def poll_events():
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
+            pygame.quit()
+            exit()
 
 def spawn_pipe(pipes):
     pipes.appendleft(pipe.Pipe())
