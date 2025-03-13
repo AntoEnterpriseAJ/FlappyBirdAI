@@ -39,6 +39,8 @@ class Brain:
         return self._sigmoid(np.dot(vision, self.weights))
 ```
 
+![myplot](https://github.com/user-attachments/assets/fee9d7d8-170b-4c6f-803d-7685f27dae5a)
+
 ### AI Evolution
 - **Fitness Calculation:** The longer a player survives, the higher its fitness.
 - **Selection:** A **roulette-wheel selection** method picks the best-performing birds.
