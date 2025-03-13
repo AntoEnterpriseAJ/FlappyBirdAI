@@ -3,6 +3,8 @@
 ## Overview
 This project is a **Flappy Bird** game built using **Pygame**, where players are controlled by a **genetic algorithm**. The AI learns to navigate through pipes by evolving over multiple generations. Each player has a simple **perceptron-based** brain that makes jump decisions based on **environmental inputs**.
 
+https://github.com/user-attachments/assets/44d9992c-fd16-4838-8d60-362d13bfa619
+
 ## Features
 - **Flappy Bird Gameplay:** Classic mechanics with pipes, ground scrolling, and player movement.
 - **Genetic Algorithm:** 
